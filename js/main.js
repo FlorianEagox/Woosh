@@ -11,6 +11,15 @@ fetch(apiRoot + "/spaseObservatories", {headers: {'Accept': 'application/json'}}
 		const li = document.createElement("li");
 		li.textContent = satellite.Name;
 		satellites.appendChild(li);
+		fetch(apiRoot + "/locations/" + satellite.Id + "/20190101T000000Z,20190101T001000Z/",
+		{headers: {'Accept': 'application/json'}})
+		.then(res => res.json())
+		.then(satelliteData => {
+			const coordinateData = satelliteData.Result.Data[1][0].Coordinates[1][0];
+			console.log(coordinateData);
+			li.textContent += "Longitude: " + coordinateData.Longitude[1][0];
+			li.textContent += "Latitude: " + coordinateData.Latitude[1][0];
+		});
 	});
 })
 
